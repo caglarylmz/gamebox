@@ -1,46 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:game_box/pages/2048/components/board_widget.dart';
+import 'package:game_box/pages/2048/components/tile_box.dart';
 
-class Game2048 extends StatefulWidget {
+class Game2048 extends StatelessWidget {
+  final BoardWidgetState boardWidgetState;
+
+  const Game2048({this.boardWidgetState});
   @override
-  _Game2048State createState() => _Game2048State();
+  Widget build(BuildContext context) {
+    double width = (boardWidgetState.boardSize().width -
+            (boardWidgetState.column + 1) * boardWidgetState.tilePadding) /
+        boardWidgetState.column;
+
+    List<TileBox> backgroundBox = List<TileBox>();
+    for (var r = 0; r < boardWidgetState.row; ++r) {
+      for (var c = 0; c < boardWidgetState.column; ++c) {
+        TileBox tile = TileBox(
+          left: c * width * boardWidgetState.tilePadding * (c + 1),
+          top: r * width * boardWidgetState.tilePadding * (r + 1),
+          size: width,
+        );
+        backgroundBox.add(tile);
+      }
+    }
+    return Positioned(
+      left: 0,
+      top: 0,
+      child: Container(
+        width:boardWidgetState.boardSize().width,
+        height: boardWidgetState.boardSize().width,
+        decoration: BoxDecoration(
+            color: Colors.grey, borderRadius: BorderRadius.circular(6)),
+        child: Stack(children: backgroundBox),
+      ),
+    );
+  }
 }
 
-class _Game2048State extends State<Game2048> {
+class MyGame2048 extends StatefulWidget {
+  @override
+  _MyGame2048State createState() => _MyGame2048State();
+}
+
+class _MyGame2048State extends State<MyGame2048> {
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-        title: Text("2048"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.info),
-            tooltip: 'About',
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(color: Colors.blue[500]),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-        
-            ],
-          ),
-        ),
-      ),
+      appBar: AppBar(),
+      body: Center(child: BoardWidget()),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-        
-          });
+          
         },
         tooltip: 'Restart',
         child: Icon(Icons.refresh),
       ),
-      
     );
   }
 }

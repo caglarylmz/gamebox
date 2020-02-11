@@ -27,8 +27,11 @@ class Board {
 
   //sola kayma
   void moveLeft() {
-    if (!canMoveLeft()) return;
-
+    if (!canMoveLeft()) {
+      print("cant move left");
+      return;
+    }
+    print("move left");
     for (var r = 0; r < this.row; ++r) {
       for (var c = 0; c < this.column; ++c) {
         mergeLeft(r, c);
@@ -40,8 +43,11 @@ class Board {
 
   //sağa kayma
   void moveRight() {
-    if (!canMoveRight()) return;
-
+    if (!canMoveRight()) {
+      print("cant move right");
+      return;
+    }
+    print("move right");
     for (var r = 0; r < this.row; ++r) {
       for (var c = this.column - 2; c >= 0; --c) {
         mergeRight(r, c);
@@ -53,8 +59,11 @@ class Board {
 
   //yukarı kayma
   void moveUp() {
-    if (!canMoveUp()) return;
-
+    if (!canMoveUp()) {
+      print("cant move up");
+      return;
+    }
+    print("move up");
     for (var r = 0; r < this.row; ++r) {
       for (var c = 0; c < this.column; ++c) {
         mergeUp(r, c);
@@ -66,8 +75,11 @@ class Board {
 
 //aşağı kayma
   void moveDown() {
-    if (!canMoveDown()) return;
-
+    if (!canMoveDown()) {
+      print("cant move down");
+      return;
+    }
+    print("move down");
     for (var r = this.row - 2; r >= 0; --r) {
       for (var c = 0; c < this.column; ++c) {
         mergeDown(r, c);
@@ -118,60 +130,71 @@ class Board {
   }
 
   //sola doğru kaydırma halinde sütunlarda merge edilebilir tile'ları kontrol ediyoruz
-  void mergeLeft(int row, int col) {
-    while (col > 0) {
-      merge(_boardTiles[row][col], _boardTiles[row][col - 1]);
-      col--;
+  void mergeLeft(int r, int c) {
+    while (c > 0) {
+      merge(_boardTiles[r][c], _boardTiles[r][c - 1]);
+      // print("merged left $r,$c");
+      c--;
     }
   }
 
   //sağa doğru kaydırma halinde sütunlarda merge edilebilir tile'ları kontrol ediyoruz
-  void mergeRight(int row, int col) {
-    while (col < this.column - 1) {
-      merge(_boardTiles[row][col], _boardTiles[row][col + 1]);
-      col++;
+  void mergeRight(int r, int c) {
+    while (c < this.column - 1) {
+      merge(_boardTiles[r][c], _boardTiles[r][c + 1]);
+      //print("merged right $r,$c");
+      c++;
     }
   }
 
   //yukarı doğru kaydırma halinde satırlarda merge edilebilir tile'ları kontrol ediyoruz
-  void mergeUp(int row, int col) {
-    while (row > 0) {
-      merge(_boardTiles[row][col], _boardTiles[row - 1][col]);
-      row--;
+  void mergeUp(int r, int c) {
+    while (r > 0) {
+      merge(_boardTiles[r][c], _boardTiles[r - 1][c]);
+      //print("merged up $r,$c");
+
+      r--;
     }
   }
 
   //aşağı doğru kaydırma halinde satırlarda merge edilebilir tile'ları kontrol ediyoruz
-  void mergeDown(int row, int col) {
-    while (row < this.row - 1) {
-      merge(_boardTiles[row][col], _boardTiles[row + 1][col]);
-      row++;
+  void mergeDown(int r, int c) {
+    while (r < this.row - 1) {
+      merge(_boardTiles[r][c], _boardTiles[r + 1][c]);
+      //print("merged down $r,$c");
+
+      r++;
     }
   }
 
   //İki Tile birleştirilebilir mi kontrol ediyoruz
   bool canMerge(Tile a, Tile b) {
+    //print("a_merge : ${a.canMerge}, a_value:${a.value}, a_isEmpty : ${a.isEmpty()}");
     return !a.canMerge &&
-        ((b.isEmpty() && !a.isEmpty()) || (!a.isEmpty() && a == b));
+        ((b.value == 0 && a.value != 0) || (a.value != 0 && a.value == b.value));
   }
 
   //İki Tile'ı birleştiriyoruz
   void merge(Tile a, Tile b) {
     if (!canMerge(a, b)) {
-      if (!a.isEmpty() && !b.canMerge) {
+      if (a.value != 0 && !b.canMerge) {
         b.canMerge = true;
       }
       return;
     }
-    if (b.isEmpty()) {
-      b.value = a.value;
-      a.value = 0;
-    } else if (a == b) {
+    if (b.value != 0 && (a.value == b.value)) {
       b.value = b.value * 2;
       a.value = 0;
       b.canMerge = true;
+      score += b.value;
+      print("a=b");
+    } else if (b.value == 0) {
+      b.value = a.value;
+      a.value = 0;
+      print("b.isEmpty");
     } else {
       b.canMerge = true;
+      print("b.canMerge");
     }
   }
 
@@ -192,12 +215,12 @@ class Board {
 
     //emptyTiles listesinde rastgele bir tile seçip ilk değer atıyoruz
     Random rnd = Random();
-    for (int i = 0; i < 4; i++) {
-      int index = rnd.nextInt(emptyTiles.length);
-      emptyTiles[index].value = rnd.nextInt(9) == 0 ? 4 : 2;
-      emptyTiles[index].isNew = true;
-      emptyTiles.removeAt(index);
-    }
+
+    int index = rnd.nextInt(emptyTiles.length);
+    emptyTiles[index].value = rnd.nextInt(9) == 0 ? 4 : 2;
+    emptyTiles[index].isNew = true;
+    emptyTiles.removeAt(index);
+    //print("r:${emptyTiles[index].row}, c: ${emptyTiles[index].column}");
   }
 
   //Tile'ları istediğimizde merge edilemez yapmak için
@@ -207,5 +230,9 @@ class Board {
         tile.canMerge = false;
       });
     });
+  }
+
+  bool gameOver(){
+    return !canMoveLeft() && !canMoveRight() && !canMoveUp() && !canMoveDown();
   }
 }

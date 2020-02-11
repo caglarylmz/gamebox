@@ -9,7 +9,10 @@ class Tile {
 
   bool isEmpty() => value == 0;
 
+  //a==b için
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode{
+    return value.hashCode;
+  }
 
 }
