@@ -4,11 +4,15 @@ import 'package:game_box/pages/2048/entities/board.dart';
 import 'package:game_box/pages/2048/game_2048.dart';
 
 class BoardWidget extends StatefulWidget {
+  BoardWidget({Key key}) : super(key: key);
+
   @override
   BoardWidgetState createState() => BoardWidgetState();
 }
 
 class BoardWidgetState extends State<BoardWidget> {
+
+
   Board _board;
   int row;
   int column;

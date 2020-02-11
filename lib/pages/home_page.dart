@@ -7,7 +7,12 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Game Cube"),
       ),
-      body: _body(context),
+      body: Center(
+        child: Container(
+          alignment: Alignment.topCenter,
+          width: 500,
+          child: _body(context)),
+      ),
     );
   }
 }
