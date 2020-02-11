@@ -54,19 +54,26 @@ class _MyGame2048State extends State<MyGame2048> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.orange[300],
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Text("2048"),
+      ),
       body: Center(
-          child: BoardWidget(
+          child: Container(
+            child: BoardWidget(
         key: _boardWidgetState,
-      )),
+      ),
+          )),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
         onPressed: () {
           setState(() {
             _boardWidgetState.currentState.newgame();
           });
         },
         tooltip: 'Restart',
-        child: Icon(Icons.refresh),
+        child: Icon(Icons.refresh,),
       ),
     );
   }

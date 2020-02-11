@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_box/pages/2048/components/score_component.dart';
 import 'package:game_box/pages/2048/components/tile_widget.dart';
 import 'package:game_box/pages/2048/entities/board.dart';
 import 'package:game_box/pages/2048/game_2048.dart';
@@ -11,8 +12,6 @@ class BoardWidget extends StatefulWidget {
 }
 
 class BoardWidgetState extends State<BoardWidget> {
-
-
   Board _board;
   int row;
   int column;
@@ -42,12 +41,41 @@ class BoardWidgetState extends State<BoardWidget> {
     isGameOver = false;
   }
 
-  void gameOver() {
-    setState(() {
+  void gameOver(BuildContext context)  {
+    setState(()  {
       if (_board.gameOver()) {
         isGameOver = true;
       }
+      if (isGameOver) {
+      _showAlertBox(context);
+      }
     });
+  }
+
+  _showAlertBox(BuildContext context){
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext _context) => AlertDialog(
+              title: Text("Score"),
+              content: Text("${_board.score}"),
+              actions: <Widget>[
+                RaisedButton(
+                  color: Colors.white,
+                  child: Text("Exit"),
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, "/");
+                  },
+                ),
+                RaisedButton(
+                  color: Colors.white,
+                  child: Text("New Game"),
+                  onPressed: () {
+                    newgame();
+                  },
+                )
+              ],
+            ));
   }
 
   @override
@@ -73,37 +101,11 @@ class BoardWidgetState extends State<BoardWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-                color: Colors.orange[100],
-                width: 120,
-                height: 60,
-                child: Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Score: "),
-                    Text("${_board.score}"),
-                  ],
-                )),
-              )
+              ScoreComponent(
+                playerScore: _board.score,
+              ),
             ],
           ),
-        ),
-        FlatButton(
-          child: Container(
-            alignment: Alignment.center,
-            width: 120,
-            height: 60,
-            decoration: BoxDecoration(
-                color: Colors.orange[100],
-                border: Border.all(color: Colors.grey)),
-            child: Text("New Game"),
-          ),
-          onPressed: () {
-            setState(() {
-              newgame();
-            });
-          },
         ),
         Container(
           height: 40,
@@ -124,12 +126,12 @@ class BoardWidgetState extends State<BoardWidget> {
               if (detail.delta.direction > 0) {
                 setState(() {
                   _board.moveDown();
-                  gameOver();
+                  gameOver(context);
                 });
               } else {
                 setState(() {
                   _board.moveUp();
-                  gameOver();
+                  gameOver(context);
                 });
               }
             },
@@ -145,12 +147,12 @@ class BoardWidgetState extends State<BoardWidget> {
               if (detail.delta.direction > 0) {
                 setState(() {
                   _board.moveLeft();
-                  gameOver();
+                  gameOver(context);
                 });
               } else {
                 setState(() {
                   _board.moveRight();
-                  gameOver();
+                  gameOver(context);
                 });
               }
             },

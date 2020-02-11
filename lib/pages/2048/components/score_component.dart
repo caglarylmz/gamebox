@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class ScoreComponent extends StatefulWidget {
   final int playerScore;
-  final int botScore;
 
-  const ScoreComponent({Key key, this.playerScore, this.botScore})
+  const ScoreComponent({Key key, this.playerScore})
       : super(key: key);
 
   @override
@@ -25,10 +24,10 @@ class _ScoreComponentState extends State<ScoreComponent> {
             children: <Widget>[
               Container(
                 color: Colors.transparent,
-                width: 90,
-                height: 60,
+                width: 100,
                 child: Icon(
                   Icons.account_box,
+                  size: 70,
                   color: Colors.white,
                 ),
               ),
@@ -36,31 +35,7 @@ class _ScoreComponentState extends State<ScoreComponent> {
                 widget.playerScore.toString(),
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          color: Colors.transparent,
-          margin: EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: Colors.transparent,
-                width: 90,
-                height: 60,
-                child: Icon(
-                  Icons.android,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                widget.botScore.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 25,
                 ),
               )
             ],

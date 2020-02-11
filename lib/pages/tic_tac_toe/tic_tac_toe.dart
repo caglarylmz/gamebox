@@ -56,6 +56,8 @@ class _TicTacToeState extends State<TicTacToe> {
         onPressed: () {
           setState(() {
             _resetGame();
+            botScore=0;
+            playerScore=0;
           });
         },
         tooltip: 'Restart',
@@ -182,6 +184,7 @@ finishGameWithDraw(
   if (result) {
     _gamePageState.setState(() {
       _resetGame();
+      
     });
   }
 }

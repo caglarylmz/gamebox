@@ -12,5 +12,5 @@ final Map<int,Color> tileColors = <int,Color>{
   256:Colors.orange[700],
   512:Colors.orange[800],
   1024:Colors.orange[900],
-  2048:Colors.deepOrange[900],
+  2048:Colors.red,
 };
